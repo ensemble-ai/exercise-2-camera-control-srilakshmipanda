@@ -35,25 +35,14 @@ func _process(delta: float) -> void:
 		else:
 			speed = catchup_speed
 			direction = pos_diff.normalized()
-	elif pos_diff.length() > leash_distance:
-		elapsed_time = 0.0
-		speed = target.velocity.length()
-		direction = target.velocity.normalized()
 	else:
 		elapsed_time = 0.0
-		speed = lead_speed
-		direction = target.velocity.normalized()
-		
-	#else:
-		#elapsed_time = 0.0
-		#var t_pos = Vector3(target.position.x, 0, target.position.z)
-		#var c_pos = Vector3(position.x, 0, position.z)
-		#var new_position = Vector3(target.velocity.x, 0, target.velocity.z).normalized() * leash_distance + t_pos
-		#direction = (new_position - c_pos).normalized()
-		#if pos_diff.length() > leash_distance:
-			#speed = target.velocity.length()
-		#else:
-			#speed = lead_speed
+		var new_position = target.velocity * leash_distance + target.position - position
+		direction = (new_position).normalized()
+		if pos_diff.length() > leash_distance:
+			speed = target.velocity.length()
+		else:
+			speed = lead_speed
 
 	var velocity = speed * direction
 	#print(pos_diff.length())

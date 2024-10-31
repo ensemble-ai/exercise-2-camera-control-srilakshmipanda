@@ -6,14 +6,14 @@ extends CameraControllerBase
 @export var catchup_speed:float
 @export var leash_distance:float
 
-var speed:float
-var direction:Vector3
-var elapsed_time:float
+var _speed:float
+var _direction:Vector3
+var _elapsed_time:float
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	super()
-	elapsed_time = 0.0
+	_elapsed_time = 0.0
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -27,24 +27,24 @@ func _process(delta: float) -> void:
 	var pos_diff = (Vector3(tpos.x, 0, tpos.z) - Vector3(position.x, 0, position.z))
 	
 	if pos_diff.length() < 0.1:
-		speed = 0
+		_speed = 0
 	elif target.velocity.x == 0 && target.velocity.z == 0:
-		if elapsed_time < catchup_delay_duration:
-			elapsed_time += delta 
-			speed = 0
+		if _elapsed_time < catchup_delay_duration:
+			_elapsed_time += delta 
+			_speed = 0
 		else:
-			speed = catchup_speed
-			direction = pos_diff.normalized()
+			_speed = catchup_speed
+			_direction = pos_diff.normalized()
 	else:
-		elapsed_time = 0.0
+		_elapsed_time = 0.0
 		var new_position = target.velocity * leash_distance + target.position - position
-		direction = (new_position).normalized()
+		_direction = (new_position).normalized()
 		if pos_diff.length() > leash_distance:
-			speed = target.velocity.length()
+			_speed = target.velocity.length()
 		else:
-			speed = lead_speed
+			_speed = lead_speed
 
-	var velocity = speed * direction
+	var velocity = _speed * _direction
 	#print(pos_diff.length())
 	#print(direction)
 	global_transform.origin += velocity * delta

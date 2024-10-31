@@ -5,8 +5,8 @@ extends CameraControllerBase
 @export var catchup_speed:float
 @export var leash_distance:float
 
-var speed:float
-var direction:Vector3
+var _speed:float
+var _direction:Vector3
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -26,16 +26,16 @@ func _process(delta: float) -> void:
 	var pos_diff = (Vector3(tpos.x, 0, tpos.z) - Vector3(position.x, 0, position.z))
 	
 	if pos_diff.length() < 0.1:
-		speed = 0
+		_speed = 0
 	elif target.velocity.x == 0 && target.velocity.z == 0:
-		speed = catchup_speed
+		_speed = catchup_speed
 	elif pos_diff.length() > leash_distance:
-		speed = target.velocity.length()
+		_speed = target.velocity.length()
 	else:
-		speed = follow_speed
+		_speed = follow_speed
 
-	direction = pos_diff.normalized()
-	var velocity = speed * direction
+	_direction = pos_diff.normalized()
+	var velocity = _speed * _direction
 	global_transform.origin += velocity * delta
 	
 	super(delta)

@@ -61,7 +61,7 @@ func _process(delta: float) -> void:
 			global_position.z += diff_between_bottom_edges
 			if !touching_left and !touching_right:
 				velocity = Vector3(target.velocity.x * push_ratio,0,0)
-	elif is_inside_speedup_zone():
+	elif _is_inside_speedup_zone():
 		velocity = target.velocity * push_ratio
 	else:
 		velocity = Vector3.ZERO
@@ -70,7 +70,7 @@ func _process(delta: float) -> void:
 	
 	super(delta)
 	
-func is_inside_speedup_zone() -> bool:
+func _is_inside_speedup_zone() -> bool:
 	var tpos = target.position
 	var cpos = position
 	
